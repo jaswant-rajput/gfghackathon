@@ -1,0 +1,36 @@
+
+
+
+
+/* Navbar */
+
+.navbar {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #3333FF;
+}
+
+.navbar-btn {
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  background: none;
+  color: white;
+}
+
+.navbar-setting-btn {
+  margin-top: auto;
+}
+
+
+.user-img {
+  padding: 30px;
+  border-radius: 100%;
+}
+
+.navbar-btn-logo {
+  height: 20px;
+}
+
