@@ -51,7 +51,7 @@ function App() {
 
   return (
     <>
-    {authenticated ? (
+    {/* {authenticated ? (
       isStudent ? (
         <StudentHome/>
       ):(
@@ -64,7 +64,7 @@ function App() {
       ) : (
         <Signup onLoginClick={handleLoginClick} student={isStudent} setIsStudent={setIsStudent} handleAuthentication={handleAuthentication}/>
       )
-    )}
+    )} */}
       
 
       <Routes>
