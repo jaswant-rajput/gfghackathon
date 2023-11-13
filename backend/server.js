@@ -1,4 +1,5 @@
 const express = require("express");
+const { collection, getDocs } = require('firebase/firestore/lite');
 const cors = require("cors");
 const app = express();
 const bcrypt=require('bcryptjs')
@@ -7,6 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 const { student_collection, teacher_collection } = require("./mongo");
+const { db } = require("./firebase")
 
 app.get("/", cors(), (req, res) => {});
 
@@ -42,6 +44,8 @@ app.post("/signup", async (req, res) => {
     password: hash,
   };
 
+
+
   
 
   try {
@@ -68,6 +72,27 @@ app.post("/signup", async (req, res) => {
     console.log(e);
   }
 });
+
+
+// Forum
+
+async function getQuestions(){
+  const questionsCol = collection(db,"questions")
+  const questionsSnapshot = await getDocs(questionsCol)
+  const questionsList = questionsSnapshot.docs.map(doc => doc.data())
+  return questionsList
+}
+
+
+app.get("/forum",async (req,res) => {
+  try {
+    const questions = await getQuestions()
+    res.json(questions)
+  } catch(err){
+    console.error("Error retreiving questions",err)
+    res.status(500).send("Internal server error")
+  } 
+})
 
 app.listen(8000, () => {
   console.log("port connected");

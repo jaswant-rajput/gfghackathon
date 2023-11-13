@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 const { initializeApp } =  require("firebase/app");
-const { getFirestore, collection, getDocs } = require('firebase/firestore/lite');
+const { getFirestore } = require('firebase/firestore/lite');
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,16 +20,16 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app)
 
-async function getQuestions(){
-    const questionsCol = collection(db,"questions")
-    const questionsSnapshot = await getDocs(questionsCol)
-    const questionsList = questionsSnapshot.docs.map(doc => doc.data())
-    return questionsList
+module.exports = {
+  db
 }
 
-async function main(){
-    const questions = await getQuestions()
-    console.log(questions)
-}
 
-main().catch(error => console.error(error))
+//testing
+
+// async function main(){
+//     const questions = await getQuestions()
+//     console.log(questions)
+// }
+
+// main().catch(error => console.error(error))
