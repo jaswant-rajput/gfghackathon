@@ -6,19 +6,23 @@ function Forum() {
   // In Work 
   const [questions,setQuestions] = React.useState([])
 
-  React.useEffect(()=>{
-    const fetchData = async () =>{
-        try {
-          const response = await axios.get("http://localhost:8000/forum");
-          setQuestions(response.data)
-        }
-        catch(err){
-          console.error(err)
-        }
-    }
+  // React.useEffect(()=>{
+  //   const fetchData = async () =>{
+  //       try {
+  //         const response = await fetch("http://localhost:8000/forum");
+  //         if(!response.ok){
+  //           throw new Error(`Http error! Status: ${response.status}`)
+  //         }
+  //         const data = await response.json()
+  //         setQuestions(data)
+  //       }
+  //       catch(err){
+  //         console.error(err)
+  //       }
+  //   }
 
-    fetchData()
-  },[])
+  //   fetchData()
+  // },[])
 
   
 
@@ -27,13 +31,17 @@ function Forum() {
     <>
       <div className='create-post'>
         <img src='' alt="user-logo"></img>
-        <div className='create-p-container'>
-          <p>Lets share whats going on your mind...</p>
-        </div>
+          <div class="form-group">
+            <input type="text" placeholder="Search Community" />
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>        
         <button>Create Post</button>
       </div>
 
-
+{
+  //not working
+}
+{/* 
       {
         questions.map((question)=> (
           <div className='post'>
@@ -58,7 +66,7 @@ function Forum() {
         </div>
         ))
       }
-
+ */}
       <div className='post'>
         <img src="/bitcoin.jfif" alt="post-img"></img>
         <div className='post-content'>
