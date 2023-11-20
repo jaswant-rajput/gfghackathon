@@ -19,6 +19,8 @@ import TeacherHome from "./components/teacher/TeacherHome";
 
 import Classroom from "./components/common/Classroom";
 import Forum from "./components/common/Forum";
+import IndividualForum from "./components/common/forumComponents/IndividualForum";
+
 import { useState } from "react";
 
 function App() {
@@ -93,6 +95,8 @@ function App() {
         <Route path="/teachernav" element={<TeacherNav />} />
         <Route path="/classroom" element={<Classroom />} />
         <Route path="/forum" element={<Forum />} />
+        <Route path="/forum/:id" element={<IndividualForum />} />
+
       </Routes>
     </>
   );

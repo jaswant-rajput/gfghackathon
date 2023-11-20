@@ -1,12 +1,15 @@
 
 
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import "../index.css"
 
 function ListOfForums() {
 
   
   const [questions,setQuestions] = React.useState([])
+  const navigate = useNavigate()
+
 
   React.useEffect(()=>{
     const fetchData = async () =>{
@@ -27,13 +30,16 @@ function ListOfForums() {
   },[])
 
   
+  const handleClick = (id) => {
+    navigate(`/forum/${id}`);
+  };
 
 
   return (
     <>
       {
         questions.map((question)=> (
-          <div key={question.id} className='post'>
+          <div key={question.id} className='post' onClick={()=>handleClick(question.id)}>
           <img src="/bitcoin.jfif" alt="post-img"></img>
           <div className='post-content'>
             <h1>{question.title}</h1>

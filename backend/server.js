@@ -1,5 +1,5 @@
 const express = require("express");
-const { collection, getDocs } = require('firebase/firestore/lite');
+const { collection, getDocs ,doc,getDoc} = require('firebase/firestore/lite');
 const cors = require("cors");
 const app = express();
 const bcrypt=require('bcryptjs')
@@ -75,13 +75,24 @@ app.post("/signup", async (req, res) => {
 
 
 // Forum
+const questionsCol = collection(db,"questions")
 
 async function getQuestions(){
-  const questionsCol = collection(db,"questions")
   const questionsSnapshot = await getDocs(questionsCol)
-  const questionsList = questionsSnapshot.docs.map(doc => doc.data())
+  const questionsList = questionsSnapshot.docs.map(doc => {
+    return {id:doc.id,...doc.data()}
+  })
+  
   return questionsList
 }
+
+async function getDocumentById(id){
+  const docRef = doc(db, "questions", id);
+  const docSnap = await getDoc(docRef);
+  const data = await docSnap.data()
+  return data 
+}
+
 
 
 app.get("/forum",async (req,res) => {
@@ -92,6 +103,18 @@ app.get("/forum",async (req,res) => {
     console.error("Error retreiving questions",err)
     res.status(500).send("Internal server error")
   } 
+})
+
+app.get("/forum/:id",async(req,res)=>{
+  try {
+    const question = await getDocumentById(req.params.id)
+    res.json(question)
+    console.log(question)
+  }
+  catch(err){
+    console.error("Error retrieving the forum",err)
+    res.status(500).send("Internal server error")
+  }
 })
 
 app.listen(8000, () => {
