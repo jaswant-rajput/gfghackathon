@@ -1,5 +1,5 @@
 const express = require("express");
-const { collection, getDocs ,doc,getDoc} = require('firebase/firestore/lite');
+const { collection, getDocs ,doc,getDoc, addDoc} = require('firebase/firestore/lite');
 const cors = require("cors");
 const app = express();
 const bcrypt=require('bcryptjs')
@@ -93,7 +93,16 @@ async function getDocumentById(id){
   return data 
 }
 
-
+async function addQuestion(data){
+  addDoc(questionsCol,data).then(()=>{
+    console.log("doc added")
+    return true
+  })
+  .catch((error)=>{
+    console.log(error)
+    return false
+  })
+}
 
 app.get("/forum",async (req,res) => {
   try {
@@ -109,11 +118,20 @@ app.get("/forum/:id",async(req,res)=>{
   try {
     const question = await getDocumentById(req.params.id)
     res.json(question)
-    console.log(question)
   }
   catch(err){
     console.error("Error retrieving the forum",err)
     res.status(500).send("Internal server error")
+  }
+})
+
+app.post("/forum/createForum",async(req,res)=>{
+  const flag = addQuestion(req.body)
+  if (flag){
+    res.json({status:"success"})
+  }
+  else {
+    res.json({status:"fail"})
   }
 })
 

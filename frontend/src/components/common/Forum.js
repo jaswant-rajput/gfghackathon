@@ -1,31 +1,16 @@
 import React from 'react'
 import "./index.css"
 import ListOfForums from './forumComponents/ListOfForums'
+
+import { useNavigate } from 'react-router-dom'
+
 function Forum() {
 
-  // In Work 
-  // const [questions,setQuestions] = React.useState([])
+  const navigate = useNavigate()
 
-  // React.useEffect(()=>{
-  //   const fetchData = async () =>{
-  //       try {
-  //         const response = await fetch("http://localhost:8000/forum");
-  //         if(!response.ok){
-  //           throw new Error(`Http error! Status: ${response.status}`)
-  //         }
-  //         const data = await response.json()
-  //         setQuestions(data)
-  //       }
-  //       catch(err){
-  //         console.error(err)
-  //       }
-  //   }
-
-  //   fetchData()
-  // },[])
-
-  // console.log(questions)  
-
+  function handleCreateForumClick(){
+    navigate("/forum/createForum")
+  }
 
   return (
     <>
@@ -35,7 +20,7 @@ function Forum() {
             <input type="text" placeholder="Search Community" />
             <i class="fa-solid fa-magnifying-glass"></i>
           </div>        
-        <button>Create Post</button>
+        <button onClick={handleCreateForumClick}>Create Post</button>
       </div>
 
       <ListOfForums />

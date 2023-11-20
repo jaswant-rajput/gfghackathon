@@ -20,6 +20,7 @@ import TeacherHome from "./components/teacher/TeacherHome";
 import Classroom from "./components/common/Classroom";
 import Forum from "./components/common/Forum";
 import IndividualForum from "./components/common/forumComponents/IndividualForum";
+import CreateForum from "./components/common/forumComponents/CreateForum";
 
 import { useState } from "react";
 
@@ -94,7 +95,11 @@ function App() {
         <Route path="/studentnav" element={<StudentNav />} />
         <Route path="/teachernav" element={<TeacherNav />} />
         <Route path="/classroom" element={<Classroom />} />
+        
+        {/* Forum */}
+        
         <Route path="/forum" element={<Forum />} />
+        <Route path="/forum/createForum" element={<CreateForum />} />
         <Route path="/forum/:id" element={<IndividualForum />} />
 
       </Routes>
