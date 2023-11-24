@@ -55,6 +55,7 @@ function ListOfForums() {
               <p className='post-footer-stats'>{question.views} Views</p>
               <p className='post-footer-stats'>{question.likes} Likes</p>
               <p>{question.comments} comments</p>
+              
             </div>
           </div>
           <img alt='favourite' src=''></img>

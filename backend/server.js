@@ -1,5 +1,5 @@
 const express = require("express");
-const { collection, getDocs ,doc,getDoc, addDoc} = require('firebase/firestore/lite');
+const { collection, getDocs ,doc,getDoc, addDoc , deleteDoc} = require('firebase/firestore/lite');
 const cors = require("cors");
 const app = express();
 const bcrypt=require('bcryptjs')
@@ -77,14 +77,15 @@ app.post("/signup", async (req, res) => {
 // Forum
 const questionsCol = collection(db,"questions")
 
+
 async function getQuestions(){
   const questionsSnapshot = await getDocs(questionsCol)
   const questionsList = questionsSnapshot.docs.map(doc => {
     return {id:doc.id,...doc.data()}
-  })
-  
+  })  
   return questionsList
 }
+
 
 async function getDocumentById(id){
   const docRef = doc(db, "questions", id);
@@ -102,6 +103,10 @@ async function addQuestion(data){
     console.log(error)
     return false
   })
+}
+
+async function deleteQuestion(id){
+  await deleteDoc(doc(db,"questions",id))
 }
 
 app.get("/forum",async (req,res) => {
@@ -125,6 +130,20 @@ app.get("/forum/:id",async(req,res)=>{
   }
 })
 
+app.delete("/forum/:id",async(req,res)=>{
+  try {
+    await deleteQuestion(req.params.id)
+    res.json({
+      data : {
+        "status":"success"
+      }
+    })
+  }catch(err){
+    console.error("Error deleting the question ,",err)
+    res.status(500).send("Internal server error")
+  }
+})
+
 app.post("/forum/createForum",async(req,res)=>{
   const flag = addQuestion(req.body)
   if (flag){
@@ -135,6 +154,12 @@ app.post("/forum/createForum",async(req,res)=>{
   }
 })
 
-app.listen(8000, () => {
-  console.log("port connected");
-});
+
+let questionsData;
+(async ()=>{
+  questionsData = await getQuestions()
+  
+  app.listen(8000, () => {
+    console.log("port connected");
+  });
+})()  
