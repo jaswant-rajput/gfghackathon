@@ -54,13 +54,42 @@ const IndividualForum = ({match})=>{
         }
       }
     
+    const insertComment = async(id) => {
+      
+        const url = `http://localhost:8000/forum/${id}/comments/insertComment`
+        const data = {"answer":document.getElementById("answer").value}
+        const options = {
+          method : "POST",
+          headers : {
+            'Content-type':"application/json"
+          },
+          body : JSON.stringify(data)
+        }
 
-    console.log(forumAnswers)
+        try {
+          const resposne = await fetch(url,options)
+          const responseData = await resposne.json()
+          
+          if (responseData.status === "success") {
+            navigate(`/forum/`)
+          }
+      }
+      catch(err){
+          console.error(err)
+      }
+
+      }
+
+
+
+    
+
+    
     const answersEl = forumAnswers.map((data,index)=>{
-      return <>
+      return <div key={index}>
               <h1>{index+1} {data.answer}</h1>
               <br/>
-              </>
+              </div>
     })
     return(
         <>
@@ -77,7 +106,7 @@ const IndividualForum = ({match})=>{
 
         <label for="answer">Add reply</label>
         <textarea type="text" id="answer"></textarea>
-        <button>Submit reply</button>
+        <button onClick={()=>insertComment(id)}>Submit reply</button>
         </>
     )
 }

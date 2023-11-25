@@ -133,6 +133,22 @@ async function deleteQuestion(id){
   await deleteDoc(doc(db,"questions",id))
 }
 
+async function insertCommentById(id,data){
+  try {
+    const parentRef = doc(db,"questions",id)
+    const subcollectionRef = collection(parentRef,"answers")
+    addDoc(subcollectionRef,data).then(()=>{
+      
+      return true
+    }).catch((error)=>{
+      console.error(error)
+      return false
+    })
+  }catch(err){
+    console.error(err)
+  }
+}
+
 app.get("/forum",async (req,res) => {
   try {
     const questions = await getQuestions()
@@ -177,6 +193,17 @@ app.delete("/forum/:id",async(req,res)=>{
 app.post("/forum/createForum",async(req,res)=>{
   const flag = addQuestion(req.body)
   if (flag){
+    res.json({status:"success"})
+  }
+  else {
+    res.json({status:"fail"})
+  }
+})
+
+app.post("/forum/:id/comments/insertComment",async(req,res)=>{
+
+  const flag = insertCommentById(req.params.id,req.body)
+  if(flag){
     res.json({status:"success"})
   }
   else {
