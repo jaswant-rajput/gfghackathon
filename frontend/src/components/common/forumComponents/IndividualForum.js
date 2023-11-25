@@ -54,6 +54,14 @@ const IndividualForum = ({match})=>{
         }
       }
     
+
+    console.log(forumAnswers)
+    const answersEl = forumAnswers.map((data,index)=>{
+      return <>
+              <h1>{index+1} {data.answer}</h1>
+              <br/>
+              </>
+    })
     return(
         <>
         <h1>Title : {forumData.title}</h1>
@@ -61,8 +69,15 @@ const IndividualForum = ({match})=>{
         <h1>Views : {forumData.views}</h1>
         <h1>comments : {forumData.comments}</h1>
         <button onClick={()=>handleDelete(id)}>Delete Post</button>
-        {/* {forumAnswers} */}
-        {/* <h1>{forumAnswers[0]}</h1> */}
+        
+        <h1>Answers : </h1>
+        {
+          answersEl
+        }
+
+        <label for="answer">Add reply</label>
+        <textarea type="text" id="answer"></textarea>
+        <button>Submit reply</button>
         </>
     )
 }
