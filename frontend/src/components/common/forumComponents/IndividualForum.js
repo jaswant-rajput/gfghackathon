@@ -7,6 +7,7 @@ import { useParams,useNavigate } from "react-router-dom";
 const IndividualForum = ({match})=>{
     
     const [forumData,setForumData] = React.useState({})
+    const [forumAnswers,setForumAnswers] = React.useState([])
     const {id} = useParams()
     const navigate = useNavigate()
     React.useState(()=>{
@@ -17,8 +18,9 @@ const IndividualForum = ({match})=>{
                     throw new Error(`Http error! Status: ${response.status}`)
                   }
                 const data = await response.json()
-                setForumData(data)
-                console.log(data)
+                setForumData(data.question)
+                setForumAnswers(data.answers)
+                
             }catch(err){
                 console.error(err)
             }
@@ -26,6 +28,7 @@ const IndividualForum = ({match})=>{
         fetchData()
     },[])
 
+    
 
     const handleDelete = async(id) => {
         try {
@@ -58,6 +61,8 @@ const IndividualForum = ({match})=>{
         <h1>Views : {forumData.views}</h1>
         <h1>comments : {forumData.comments}</h1>
         <button onClick={()=>handleDelete(id)}>Delete Post</button>
+        {/* {forumAnswers} */}
+        {/* <h1>{forumAnswers[0]}</h1> */}
         </>
     )
 }

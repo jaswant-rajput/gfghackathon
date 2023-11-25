@@ -90,8 +90,32 @@ async function getQuestions(){
 async function getDocumentById(id){
   const docRef = doc(db, "questions", id);
   const docSnap = await getDoc(docRef);
-  const data = await docSnap.data()
+  const data = docSnap.data()
   return data 
+}
+
+async function getAnswersById(id){
+  const parentDocRef = doc(db, 'questions', id);
+
+  // Get a reference to the subcollection
+  const subcollectionRef = collection(parentDocRef, 'answers');
+  
+  // Get the documents in the subcollection
+ 
+  try {
+    const querySnapshot = await getDocs(subcollectionRef);
+    const posts = [];
+
+    querySnapshot.forEach((docSnapshot) => {
+      const post = docSnapshot.data();
+      posts.push(post);
+    });
+
+    
+    return posts;
+  } catch (error) {
+    console.error('Error getting posts:', error);
+  } 
 }
 
 async function addQuestion(data){
@@ -112,6 +136,7 @@ async function deleteQuestion(id){
 app.get("/forum",async (req,res) => {
   try {
     const questions = await getQuestions()
+    
     res.json(questions)
   } catch(err){
     console.error("Error retreiving questions",err)
@@ -122,7 +147,12 @@ app.get("/forum",async (req,res) => {
 app.get("/forum/:id",async(req,res)=>{
   try {
     const question = await getDocumentById(req.params.id)
-    res.json(question)
+    const answers = await getAnswersById(req.params.id)
+    
+    res.json({
+      "question":question,
+      "answers":answers
+    })
   }
   catch(err){
     console.error("Error retrieving the forum",err)
